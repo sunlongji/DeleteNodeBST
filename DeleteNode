@@ -1,0 +1,106 @@
+//Delete a node in BST
+class TreeNode {
+      int val;
+      TreeNode left;
+      TreeNode right;
+      TreeNode(int x) { val = x; }
+  }
+ 
+public class Solution {
+	public TreeNode deleteNode(TreeNode root, int key){
+		TreeNode cur=root;
+		TreeNode pre=null;
+		while(cur!=null&&cur.val!=key){
+			pre=cur;
+			if(cur.val>key){
+				cur=cur.left;
+			}else if(cur.val<key){
+				cur=cur.right;
+			}
+		}
+		//target is the root node;
+		if(pre==null) return deleteRootNode(cur);
+		//target is a left child;
+		if(pre.left==cur)	return pre.left=deleteRootNode(cur);
+		//target is a right child;
+		if(pre.right==cur)	return pre.right=deleteRootNode(cur);
+		return root;
+	}
+	private TreeNode deleteRootNode(TreeNode root){
+		if(root==null)	return null;
+		//If no left child, return right child 
+		if(root.left==null)	return root.right;
+		//If no right child, return left child;
+		if(root.right==null)	return root.left;
+		TreeNode pre=null;
+		//pre is the parent of the rightsmallest node;
+		TreeNode rightSmallest=root.right;
+		while(rightSmallest.left!=null){
+			pre=rightSmallest;
+			rightSmallest=rightSmallest.left;
+		}
+		rightSmallest.left=root.left;
+		//If rightSmallest's parent is not the root, that is, pre is the parent of rightSmallest;
+		//pre is not null;
+		if(root.right!=rightSmallest){
+			//cut off the link between pre and rightSmallest, and link pre with the right child
+			//of rightSmallest;
+			pre.left=rightSmallest.right;
+			//build the link between rightSmallest and the right child of root;
+			rightSmallest.right=root.right;			
+		}
+		return rightSmallest;
+	}
+	 public TreeNode deleteNodeII(TreeNode root, int key) {
+	        if (root == null) return null;
+	        
+	        if (root.val > key) {
+	            root.left = deleteNode(root.left, key);
+	        } else if (root.val < key) {
+	            root.right = deleteNode(root.right, key);
+	        } else {
+	            if (root.left == null) return root.right;
+	            if (root.right == null) return root.left;
+	            
+	            TreeNode rightSmallest = root.right;
+	            while (rightSmallest.left != null) rightSmallest = rightSmallest.left;
+	            //link the rightSmallest with the left child of the root;
+	            rightSmallest.left = root.left;
+	            // The right child of the root is the new root;
+	            return root.right;
+	        }
+	        return root;
+	    }
+	 public TreeNode deleteNodeIII(TreeNode root, int key) {
+	        if (root == null) return null;
+	        
+	        if (root.val > key) {
+	            root.left = deleteNode(root.left, key);
+	        } else if (root.val < key) {
+	            root.right = deleteNode(root.right, key);
+	        } else {
+	            if (root.left == null) return root.right;
+	            if (root.right == null) return root.left;
+	            
+	            TreeNode pre=null;
+	    		//pre is the parent of the rightsmallest node;
+	    		TreeNode rightSmallest=root.right;
+	    		while(rightSmallest.left!=null){
+	    			pre=rightSmallest;
+	    			rightSmallest=rightSmallest.left;
+	    		}
+	    		rightSmallest.left=root.left;
+	    		//If rightSmallest's parent is not the root, that is, pre is the parent of rightSmallest;
+	    		//pre is not null;
+	    		if(root.right!=rightSmallest){
+	    			//cut off the link between pre and rightSmallest, and link pre with the right child
+	    			//of rightSmallest;
+	    			pre.left=rightSmallest.right;
+	    			//build the link between rightSmallest and the right child of root;
+	    			rightSmallest.right=root.right;			
+	    		}
+	    		return rightSmallest;
+	        }
+	        return root;
+	    }
+}
